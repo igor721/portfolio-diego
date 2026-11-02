@@ -93,7 +93,9 @@ export default function Hero() {
             </motion.div>
           </motion.div>
 
+          {/* Image principal do atleta */}
           {/* Image / Placeholder */}
+{/* Image principal do atleta */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -102,30 +104,46 @@ export default function Hero() {
           >
             <div className="relative aspect-[3/4] max-w-md mx-auto lg:max-w-none">
               {/* Gold frame */}
-              <div className="absolute -inset-3 border border-gold-500/30 rounded-sm" />
-              <div className="absolute -inset-1 border border-gold-500/10 rounded-sm" />
-              
-              {/* Image placeholder */}
-              <div className="relative w-full h-full bg-gradient-to-br from-[#1a1a1a] to-[#0d0d0d] rounded-sm overflow-hidden flex items-center justify-center">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-gold-500/5 via-transparent to-transparent" />
-                <div className="text-center p-8">
+              <div className="absolute -inset-3 border border-gold-500/30 rounded-sm pointer-events-none" />
+              <div className="absolute -inset-1 border border-gold-500/10 rounded-sm pointer-events-none" />
+
+              {/* Foto real */}
+              <div className="relative w-full h-full rounded-sm overflow-hidden bg-[#111]">
+                <img
+                  src="/images/hero-diego.jpg"
+                  alt={`${athlete.name} - Atleta de Bodybuilding`}
+                  className="w-full h-full object-cover object-top"
+                  onError={(e) => {
+                    // Fallback visual caso a imagem ainda não exista
+                    const target = e.currentTarget;
+                    target.style.display = "none";
+                    const fallback = target.nextElementSibling as HTMLElement | null;
+                    if (fallback) fallback.style.display = "flex";
+                  }}
+                />
+
+                {/* Fallback enquanto a foto não for adicionada */}
+                <div
+                  className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] to-[#0d0d0d] flex-col items-center justify-center p-8"
+                  style={{ display: "none" }}
+                >
                   <div className="w-24 h-24 mx-auto mb-4 rounded-full border-2 border-gold-500/30 flex items-center justify-center">
                     <span className="font-display text-3xl text-gold-500/50">D</span>
                   </div>
-                  <p className="text-white/30 text-sm uppercase tracking-widest">
+                  <p className="text-white/30 text-sm uppercase tracking-widest text-center">
                     Foto principal
                   </p>
-                  <p className="text-white/20 text-xs mt-2">
-                    Substitua por hero-diego.jpg
+                  <p className="text-white/20 text-xs mt-2 text-center">
+                    Adicione hero-diego.jpg em public/images/
                   </p>
                 </div>
               </div>
 
               {/* Decorative corner accents */}
-              <div className="absolute -top-1 -left-1 w-8 h-8 border-t-2 border-l-2 border-gold-500" />
-              <div className="absolute -top-1 -right-1 w-8 h-8 border-t-2 border-r-2 border-gold-500" />
-              <div className="absolute -bottom-1 -left-1 w-8 h-8 border-b-2 border-l-2 border-gold-500" />
-              <div className="absolute -bottom-1 -right-1 w-8 h-8 border-b-2 border-r-2 border-gold-500" />
+              <div className="absolute -top-1 -left-1 w-8 h-8 border-t-2 border-l-2 border-gold-500 pointer-events-none" />
+              <div className="absolute -top-1 -right-1 w-8 h-8 border-t-2 border-r-2 border-gold-500 pointer-events-none" />
+              <div className="absolute -bottom-1 -left-1 w-8 h-8 border-b-2 border-l-2 border-gold-500 pointer-events-none" />
+              <div className="absolute -bottom-1 -right-1 w-8 h-8 border-b-2 border-r-2 border-gold-500 pointer-events-none" />
             </div>
           </motion.div>
         </div>

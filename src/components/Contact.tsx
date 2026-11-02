@@ -18,7 +18,7 @@ export default function Contact() {
     ? `https://wa.me/${athlete.contact.whatsapp}`
     : "#";
   const instagramLink = hasInstagram
-    ? `https://instagram.com/${athlete.contact.instagram.replace("@", "")}`
+    ? `https://www.instagram.com/diegogaldinofit/?utm_source=ig_web_button_share_sheet${athlete.contact.instagram.replace("@", "diegogaldinofit")}`
     : "#";
   const emailLink = hasEmail ? `mailto:${athlete.contact.email}` : "#";
 
@@ -136,8 +136,7 @@ export default function Contact() {
               transition={{ delay: 0.5 }}
               className="text-center text-white/30 text-sm mt-8"
             >
-              Preencha os contatos em{" "}
-              <code className="text-gold-500/60">src/data/athlete.ts</code>
+              
             </motion.p>
           </div>
         </motion.div>

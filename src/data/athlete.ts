@@ -127,7 +127,7 @@ Com uma mentalidade focada em evolução constante, Diego trabalha para se conso
   },
 
   contact: {
-    instagram: "", // Preencher com @usuario
+    instagram: "@diegogaldinofit", // Preencher com @usuario
     whatsapp: "", // Preencher com número (apenas dígitos, ex: 5583999999999)
     email: "", // Preencher com e-mail
     commercialMessage:

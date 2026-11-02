@@ -1,9 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { useInView } from "framer-motion";
-import { useRef } from "react";
+import { useState, useRef } from "react";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import { X, ZoomIn } from "lucide-react";
 import { athlete } from "@/data/athlete";
 
@@ -12,9 +10,10 @@ export default function Gallery() {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [selected, setSelected] = useState<number | null>(null);
 
-  const selectedItem = selected !== null
-    ? athlete.gallery.find((item) => item.id === selected)
-    : null;
+  const selectedItem =
+    selected !== null
+      ? athlete.gallery.find((item) => item.id === selected)
+      : null;
 
   return (
     <section id="galeria" className="section-padding relative bg-[#0a0a0a]">
@@ -46,11 +45,27 @@ export default function Gallery() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.08 * index, duration: 0.5 }}
-                className="group relative aspect-[3/4] overflow-hidden rounded-sm cursor-pointer"
+                className="group relative aspect-[3/4] overflow-hidden rounded-sm cursor-pointer bg-[#111]"
                 onClick={() => setSelected(item.id)}
               >
-                {/* Placeholder background */}
-                <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] to-[#0d0d0d] flex flex-col items-center justify-center p-4">
+                {/* Imagem real */}
+                <img
+                  src={item.src}
+                  alt={item.alt}
+                  className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    target.style.display = "none";
+                    const fallback = target.nextElementSibling as HTMLElement | null;
+                    if (fallback) fallback.style.display = "flex";
+                  }}
+                />
+
+                {/* Fallback se a imagem ainda não existir */}
+                <div
+                  className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] to-[#0d0d0d] flex-col items-center justify-center p-4"
+                  style={{ display: "none" }}
+                >
                   <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border border-gold-500/20 flex items-center justify-center mb-3">
                     <span className="font-display text-xl sm:text-2xl text-gold-500/40">
                       {item.id}
@@ -60,12 +75,12 @@ export default function Gallery() {
                     {item.caption}
                   </p>
                   <p className="text-white/15 text-[10px] sm:text-xs mt-1 text-center">
-                    Placeholder
+                    Adicione {item.src.replace("/images/", "")}
                   </p>
                 </div>
 
                 {/* Hover overlay */}
-                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                   <div className="transform scale-90 group-hover:scale-100 transition-transform duration-300">
                     <ZoomIn className="w-8 h-8 text-gold-400" />
                   </div>
@@ -73,13 +88,13 @@ export default function Gallery() {
 
                 {/* Caption bar */}
                 <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <p className="text-white/80 text-sm text-center">
+                  <p className="text-white/90 text-sm text-center font-medium">
                     {item.caption}
                   </p>
                 </div>
 
                 {/* Gold border on hover */}
-                <div className="absolute inset-0 border border-transparent group-hover:border-gold-500/40 transition-colors duration-300 rounded-sm" />
+                <div className="absolute inset-0 border border-transparent group-hover:border-gold-500/40 transition-colors duration-300 rounded-sm pointer-events-none" />
               </motion.div>
             ))}
           </div>
@@ -98,7 +113,7 @@ export default function Gallery() {
           >
             <button
               onClick={() => setSelected(null)}
-              className="absolute top-4 right-4 sm:top-8 sm:right-8 p-2 text-white/70 hover:text-gold-400 transition-colors"
+              className="absolute top-4 right-4 sm:top-8 sm:right-8 p-2 text-white/70 hover:text-gold-400 transition-colors z-10"
               aria-label="Fechar"
             >
               <X size={28} />
@@ -109,22 +124,43 @@ export default function Gallery() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="relative max-w-lg w-full aspect-[3/4] bg-gradient-to-br from-[#1a1a1a] to-[#0d0d0d] rounded-sm flex flex-col items-center justify-center"
+              className="relative max-w-lg w-full max-h-[85vh] flex flex-col items-center"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="w-20 h-20 rounded-full border border-gold-500/30 flex items-center justify-center mb-4">
-                <span className="font-display text-3xl text-gold-500/50">
-                  {selectedItem.id}
-                </span>
+              <div className="relative w-full aspect-[3/4] rounded-sm overflow-hidden bg-[#111] border border-gold-500/20">
+                <img
+                  src={selectedItem.src}
+                  alt={selectedItem.alt}
+                  className="w-full h-full object-cover object-top"
+                  onError={(e) => {
+                    const target = e.currentTarget;
+                    target.style.display = "none";
+                    const fallback = target.nextElementSibling as HTMLElement | null;
+                    if (fallback) fallback.style.display = "flex";
+                  }}
+                />
+
+                {/* Fallback no lightbox */}
+                <div
+                  className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] to-[#0d0d0d] flex-col items-center justify-center"
+                  style={{ display: "none" }}
+                >
+                  <div className="w-20 h-20 rounded-full border border-gold-500/30 flex items-center justify-center mb-4">
+                    <span className="font-display text-3xl text-gold-500/50">
+                      {selectedItem.id}
+                    </span>
+                  </div>
+                  <p className="text-white/50 text-lg uppercase tracking-widest">
+                    {selectedItem.caption}
+                  </p>
+                  <p className="text-white/30 text-sm mt-2">
+                    Adicione {selectedItem.src.replace("/images/", "")}
+                  </p>
+                </div>
               </div>
-              <p className="text-white/50 text-lg uppercase tracking-widest">
+
+              <p className="text-white/70 text-sm mt-4 uppercase tracking-widest">
                 {selectedItem.caption}
-              </p>
-              <p className="text-white/30 text-sm mt-2">
-                Substitua pela imagem real
-              </p>
-              <p className="text-white/20 text-xs mt-1">
-                {selectedItem.src}
               </p>
             </motion.div>
           </motion.div>
