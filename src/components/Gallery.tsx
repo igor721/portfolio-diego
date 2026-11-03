@@ -4,6 +4,7 @@ import { useState, useRef } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { X, ZoomIn } from "lucide-react";
 import { athlete } from "@/data/athlete";
+import { withBasePath } from "@/lib/paths";
 
 export default function Gallery() {
   const ref = useRef(null);
@@ -50,7 +51,7 @@ export default function Gallery() {
               >
                 {/* Imagem real */}
                 <img
-                  src={item.src}
+                  src={withBasePath(item.src)}
                   alt={item.alt}
                   className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
                   onError={(e) => {
@@ -129,7 +130,7 @@ export default function Gallery() {
             >
               <div className="relative w-full aspect-[3/4] rounded-sm overflow-hidden bg-[#111] border border-gold-500/20">
                 <img
-                  src={selectedItem.src}
+                  src={withBasePath(selectedItem.src)}
                   alt={selectedItem.alt}
                   className="w-full h-full object-cover object-top"
                   onError={(e) => {

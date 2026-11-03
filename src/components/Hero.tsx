@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { athlete } from "@/data/athlete";
+import { withBasePath } from "@/lib/paths";
 
 export default function Hero() {
   const scrollTo = (id: string) => {
@@ -19,7 +20,7 @@ export default function Hero() {
     >
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-black via-black to-[#0a0a0a]" />
-      
+
       {/* Decorative gold lines */}
       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold-500/50 to-transparent" />
       <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold-500/30 to-transparent" />
@@ -94,8 +95,6 @@ export default function Hero() {
           </motion.div>
 
           {/* Image principal do atleta */}
-          {/* Image / Placeholder */}
-{/* Image principal do atleta */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -110,11 +109,10 @@ export default function Hero() {
               {/* Foto real */}
               <div className="relative w-full h-full rounded-sm overflow-hidden bg-[#111]">
                 <img
-                  src="/images/hero-diego.jpg"
+                  src={withBasePath("/images/hero-diego.jpg")}
                   alt={`${athlete.name} - Atleta de Bodybuilding`}
                   className="w-full h-full object-cover object-top"
                   onError={(e) => {
-                    // Fallback visual caso a imagem ainda não exista
                     const target = e.currentTarget;
                     target.style.display = "none";
                     const fallback = target.nextElementSibling as HTMLElement | null;
